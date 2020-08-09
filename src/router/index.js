@@ -1,21 +1,27 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import {createRouter, createWebHashHistory} from 'vue-router'
 
 const routes = [
   {
-    path: "/canvas-study",
-    name: "CanvasStudy",
+    path: '/canvas-study',
+    name: 'CanvasStudy',
     component: () =>
-      import(/* webpackChunkName: "CanvasStudy" */ "@/views/CanvasStudy/index")
+      import(/* webpackChunkName: "CanvasStudy" */ '@/views/CanvasStudy/index'),
   },
   {
-    path: "/",
-    redirect: "/canvas-study"
-  }
-];
+    path: '/gobang',
+    name: 'Gobang',
+    component: () =>
+      import(/* webpackChunkName: "Gobang" */ '@/views/Gobang/index'),
+  },
+  {
+    path: '/',
+    redirect: '/canvas-study',
+  },
+]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
-});
+  routes,
+})
 
-export default router;
+export default router
