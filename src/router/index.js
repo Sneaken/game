@@ -8,7 +8,7 @@ const routes = [
       import(/* webpackChunkName: "CanvasStudy" */ '@/views/CanvasStudy/index'),
   },
   {
-    path: '/gobang',
+    path: '/gobang/:room',
     name: 'Gobang',
     component: () =>
       import(/* webpackChunkName: "Gobang" */ '@/views/Gobang/index'),

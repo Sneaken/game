@@ -16,13 +16,16 @@
 </template>
 
 <script>
-import {computed, onMounted, ref} from 'vue'
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
+import io from 'socket.io-client'
+import {useRoute} from 'vue-router'
 
 export default {
   name: 'Gobang',
   setup() {
     const canvas = ref(null)
     const step = ref([])
+    const socket = ref(null)
     const BLANK = 25 // 间隔
     const RADIUS = 10 // 棋子半径
     const BORDER = 15 // 边框距离
@@ -31,12 +34,28 @@ export default {
     let flag = computed(() => {
       return step.value.length % 2 === 0
     })
+    const route = useRoute()
+    const room = computed(() => {
+      return route.params.room
+    })
     let regretNumber = 0
+
     onMounted(() => {
       if (canvas.value.getContext) {
         ctx = canvas.value.getContext('2d')
         initBlock()
       }
+
+      socket.value = io('http://localhost:3000/gobang')
+      socket.value.emit('join', room.value)
+
+      socket.value.on('system', message => {
+        console.log(message)
+      })
+    })
+
+    onBeforeUnmount(() => {
+      socket.value.emit('leave', room.value)
     })
 
     function initBlock() {
