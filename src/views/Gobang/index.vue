@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import io from 'socket.io-client'
-import {useRoute} from 'vue-router'
+import { useRoute } from 'vue-router'
 
 export default {
   name: 'Gobang',
@@ -73,7 +73,23 @@ export default {
     function drawPiece(x, y) {
       ctx.beginPath()
       ctx.arc(BLANK * x + BORDER, BLANK * y + BORDER, RADIUS, 0, 2 * Math.PI)
-      ctx.fillStyle = flag.value ? 'black' : 'white'
+      ctx.closePath()
+      const gradient = ctx.createRadialGradient(
+        BLANK * x + BORDER + 2,
+        BLANK * y + BORDER - 2,
+        0,
+        BLANK * x + BORDER + 2,
+        BLANK * y + BORDER - 2,
+        RADIUS,
+      )
+      if (flag.value) {
+        gradient.addColorStop(0, 'gray')
+        gradient.addColorStop(1, 'black')
+      } else {
+        gradient.addColorStop(0, 'white')
+        gradient.addColorStop(1, 'gray')
+      }
+      ctx.fillStyle = gradient
       ctx.fill()
     }
 
